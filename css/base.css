@@ -1,0 +1,46 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 15px arial, sans-serif;
+    background: #008b54;
+
+    display: flex;
+    justify-content: center;
+}
+
+#code {
+    width: 100%;
+    height: 100%;
+}
+
+#main {
+    margin-top: 2em;
+    display: grid;
+    width: 80%;
+    grid-template-areas:
+        "tape   text"
+        "inputs text";
+}
+
+/* Grid areas */
+#text {
+    grid-area: text;
+}
+
+#inputs {
+    grid-area: inputs;
+    height: 120px;
+}
+
+#tape {
+    grid-area: tape;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

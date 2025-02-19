@@ -40,7 +40,6 @@ var speedToTimeoutMapping = [1500, 1350, 1200, 1050, 900, 750, 600, 450, 300, 15
 
 var statusDiv = document.getElementById('status');
 var stateDiv = document.getElementById('state');
-var usernameDiv = document.getElementById('username');
 var codeTextarea = document.getElementById('code');
 var inputBox = document.getElementById('input');
 var tapeDiv = document.getElementById('tape');
@@ -48,9 +47,6 @@ var speedLabel = document.getElementById('speedlbl');
 var speedSelect = document.getElementById('speed');
 var startBtn = document.getElementById('startbtn');
 var stopBtn = document.getElementById('stopbtn');
-var progsSelect = document.getElementById('progs');
-var loadBtn = document.getElementById('loadbtn');
-var saveBtn = document.getElementById('savebtn');
 var moveLeftBtn = document.getElementById('moveleft');
 var moveRightBtn = document.getElementById('moveright');
 var cells = [];
@@ -67,8 +63,6 @@ var setTextContent = function (div, text) {
 
 startBtn.value = currlang.START_BUTTON;
 stopBtn.value = currlang.STOP_BUTTON;
-loadBtn.value = currlang.LOAD_BUTTON;
-saveBtn.value = currlang.SAVE_BUTTON;
 setTextContent(speedLabel, currlang.SPEED_LABEL);
 
 var setstatus = function (text, dontcancel) {
@@ -188,7 +182,7 @@ var drawtape = function () {
 	if (currclass === 0 && turingMachineInstance.stopped) {
 		setstatus(currlang.STOPPED + ' ' + currlang.STEPS_LABEL + ' ' + turingMachineInstance.stepcount, true);
 		currclass = null;
-		codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = false;
+		codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = false;
 		return;
 	}
 
@@ -221,7 +215,7 @@ var start = function () {
 				turingMachineInstance.tick();
 		},
 		onprestart: function () {
-			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = true;
+			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = true;
 			beforeUnloadWarningEnabled = true;
 			currclass = null;
 			clearTimeout(drawTimeout);
@@ -245,7 +239,7 @@ var start = function () {
 			clearTimeout(tickTimeout);
 			setstatus((obj.errorType === 'syntax' ? String(currlang.SYNTAX_ERROR_LABEL).replace('%d', obj.errorLine + 1) : currlang.UNKNOWN_ERROR_LABEL) + ' ' + currlang[obj.errorMessage]);
 			currclass = null;
-			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = false;
+			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = false;
 			codeTextarea.focus();
 			textareaSelectLine(codeTextarea, obj.errorLine);
 		},
@@ -263,7 +257,7 @@ var start = function () {
 	turingMachineInstance.start();
 };
 
-var preventSelectTo = [stateDiv, usernameDiv, speedLabel, statusDiv, tapeDiv, moveLeftBtn, moveRightBtn];
+var preventSelectTo = [stateDiv, speedLabel, statusDiv, tapeDiv, moveLeftBtn, moveRightBtn];
 var selectPreventerEvent = ('onselectstart' in document.body ? 'selectstart' : 'mousedown');
 var selectPreventerFunc = function (e) {
 	if (!e) {
@@ -308,4 +302,4 @@ window.onbeforeunload = function () {
 		return currlang.EXIT_CONFIRMATION;
 	}
 };
-codeTextarea.disabled = codeTextarea.readOnly = inputBox.disabled = speedSelect.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = false;
+codeTextarea.disabled = codeTextarea.readOnly = inputBox.disabled = speedSelect.disabled = startBtn.disabled = false;

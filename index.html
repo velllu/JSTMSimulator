@@ -12,46 +12,94 @@
         <meta name="keywords" content="jstmsimulator, tmsimulator, tmsimulatore, turing machine simulator, turing machine, tm simulator, turing simulator, simulatore macchina di turing, macchina di turing, simulatore turing" />
         <meta name="google" content="notranslate" />
         <meta name="format-detection" content="telephone=no" />
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/base.css" />
+        <link rel="stylesheet" type="text/css" href="css/inputs.css" />
+        <link rel="stylesheet" type="text/css" href="css/tape.css" />
     </head>
     <body>
-        <div id="fork-me-on-github">
-            <div><a href="https://github.com/velllu/JSTMSimulator" target="_blank">Fork me on GitHub</a></div>
-        </div>
-        <noscript><div id="noscript-alert">Please enable JavaScript in your browser.</div></noscript>
         <div id="main">
-            <div id="state">0</div>
-            <div id="username"></div>
-            <textarea id="code" wrap="off" autocomplete="off" spellcheck="false" disabled></textarea>
-            <select id="progs" autocomplete="off" disabled></select>
-            <input type="button" id="loadbtn" value="" disabled /><input type="button" id="savebtn" value="" disabled /><input type="button" id="startbtn" value="" disabled /><input type="button" id="stopbtn" value="" disabled />
-            <span id="speedlbl"></span>
-            <select id="speed" autocomplete="off" disabled>
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option selected>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-                <option>Max</option>
-                <option>Max, No Draw (fast, but only usable for ending programs)</option>
-            </select>
-            <input type="text" id="input" autocomplete="off" spellcheck="false" value="" disabled />
-            <div id="status"><a href="https://www.turingsimulator.net/">Turing Machine Simulator</a> by <a href="https://www.vittgam.net/">VittGam</a></div>
-            <div id="tape">
-                <div id="tapebg"></div>
-                <span id="cell0"></span><span id="cell1"></span><span id="cell2"></span><span id="cell3"></span><span id="cell4"></span><span id="cell5"></span><span id="cell6"></span><span id="cell7"></span><span id="cell8"></span>
-                <span id="cell9"></span><span id="cell10"></span><span id="cell11"></span><span id="cell12"></span><span id="cell13"></span><span id="cell14"></span><span id="cell15"></span><span id="cell16"></span><span id="cell17"></span>
-                <span id="cell18"></span><span id="cell19"></span><span id="cell20"></span><span id="cell21"></span><span id="cell22"></span><span id="cell23"></span><span id="cell24"></span><span id="cell25"></span>
-                <span id="cell26"></span><span id="cell27"></span><span id="cell28"></span><span id="cell29"></span><span id="cell30"></span>
+            <div id="text">
+                <textarea id="code" wrap="off" autocomplete="off" spellcheck="false" disabled></textarea>
             </div>
-            <div id="moveleft"></div>
-            <div id="moveright"></div>
+
+            <div id="inputs">
+                <div id="authorrow">
+                    <div id="status"><a href="https://www.turingsimulator.net/">Turing Machine Simulator</a> by <a href="https://www.vittgam.net/">VittGam</a></div>
+                </div>
+
+                <div id="firstrow">
+                    <span id="speedlbl"></span>
+                    <div id="buttons">
+                        <select id="speed" autocomplete="off" disabled>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option selected>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                            <option>10</option>
+                            <option>Max</option>
+                            <option>Max, No Draw (fast, but only usable for ending programs)</option>
+                        </select>
+
+                        <input type="button" id="startbtn" value="" disabled />
+                        <input type="button" id="stopbtn" value="" disabled />
+                    </div>
+                </div>
+
+                <div id="secondrow">
+                    <input type="text" id="input" autocomplete="off" spellcheck="false" placeholder="Scrivi qua il nastro iniziale..." disabled />
+                </div>
+            </div>
+
+            <div id="tape">
+                <div id="state-display">
+                    <img id="state-image" src="media/computer.png">
+                    <div id="state-div"><p id="state">0</p></div>
+                </div>
+                <p id="arrow">⬇</p>
+
+                <div id="cells">
+                    <span><p id="cell0"></p></span>
+                    <span><p id="cell1"></p></span>
+                    <span><p id="cell2"></p></span>
+                    <span><p id="cell3"></p></span>
+                    <span><p id="cell4"></p></span>
+                    <span><p id="cell5"></p></span>
+                    <span><p id="cell6"></p></span>
+                    <span><p id="cell7"></p></span>
+                    <span><p id="cell8"></p></span> 
+                    <span><p id="cell9"></p></span>
+                    <span><p id="cell10"></p></span>
+                    <span><p id="cell11"></p></span>
+                    <span><p id="cell12"></p></span>
+                    <span><p id="cell13"></p></span>
+                    <span><p id="cell14"></p></span>
+                    <span><p id="cell15"></p></span>
+                    <span><p id="cell16"></p></span>
+                    <span><p id="cell17"></p></span> 
+                    <span><p id="cell18"></p></span>
+                    <span><p id="cell19"></p></span>
+                    <span><p id="cell20"></p></span>
+                    <span><p id="cell21"></p></span>
+                    <span><p id="cell22"></p></span>
+                    <span><p id="cell23"></p></span>
+                    <span><p id="cell24"></p></span>
+                    <span><p id="cell25"></p></span> 
+                    <span><p id="cell26"></p></span>
+                    <span><p id="cell27"></p></span>
+                    <span><p id="cell28"></p></span>
+                    <span><p id="cell29"></p></span>
+                    <span><p id="cell30"></p></span>
+                </div>
+
+                <div id="moveleft"></div>
+                <div id="moveright"></div>
+            </div>
         </div>
 
         <script src="js/turing_machine.js"></script>

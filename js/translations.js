@@ -41,7 +41,6 @@ lang.en = {
 	LOAD_RESULT_FAIL: 'An unknown error occurred while trying to load the program from the server. Please try again later.',
 	SAVE_RESULT_OK: 'Program saved successfully on the server.',
 	SAVE_RESULT_FAIL: 'An unknown error occurred while trying to save the program on the server. Please try again later.',
-	USERNAME_LABEL: 'User:'
 };
 lang.it = {
 	START_BUTTON: 'Esegui',
@@ -75,5 +74,4 @@ lang.it = {
 	LOAD_RESULT_FAIL: 'Si è verificato un errore sconosciuto durante il caricamento del programma dal server. Riprova più tardi.',
 	SAVE_RESULT_OK: 'Programma salvato con successo sul server.',
 	SAVE_RESULT_FAIL: 'Si è verificato un errore sconosciuto durante il salvataggio del programma sul server. Riprova più tardi.',
-	USERNAME_LABEL: 'Utente:'
 };

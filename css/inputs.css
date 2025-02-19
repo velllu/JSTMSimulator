@@ -1,0 +1,41 @@
+/* Inputs first row */
+#speedlbl {
+    color: white;
+}
+
+#firstrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#buttons {
+    display: flex;
+    flex-grow: 1;
+    gap: 8px;
+}
+
+#buttons select,
+#buttons input {
+    width: 33%;
+}
+
+/* Inputs second row */
+#secondrow {
+    display: flex;
+}
+
+#secondrow input {
+    width: 100%;
+}
+
+/* Author row */
+#authorrow {
+    display: flex;
+    justify-content: right;
+}
+
+#authorrow,
+#authorrow a {
+    color: white;
+}
