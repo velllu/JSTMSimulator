@@ -1,4 +1,6 @@
-/*
+/* {
+		tickSpeed = 0;
+	}
  * JSTMSimulator - A Turing Machine simulator written in JavaScript.
  * Copyright (C) 2011-2018 Vittorio Gambaletta <vittgam@turingsimulator.net>
  * https://www.turingsimulator.net/
@@ -15,7 +17,17 @@ try {
 		currlang = lang[String(browserLang).substr(0, 2)];
 	}
 	browserLang = null;
-} catch (e) {}
+} catch (e) { }
+
+/**
+ * The delay after a tick
+ */
+var tickSpeed = null;
+
+/**
+ * The delay in-between draws
+ */
+var drawSpeed = null;
 
 var turingMachineInstance = null;
 var beforeUnloadWarningEnabled = false;
@@ -24,9 +36,7 @@ var ascending_character_class_warning = false;
 var statusTimeout = null;
 var drawTimeout = null;
 var tickTimeout = null;
-var tickSpeed = null;
-var drawSpeed = null;
-var speedToTimeoutMapping = [1500, 1350, 1200, 1050, 900, 750, 600, 450, 300, 150, 0, -1];
+var speedToTimeoutMapping = [1500, 1350, 1200, 1050, 900, 750, 600, 450, 300, 150, 0, -1, -2];
 
 var statusDiv = document.getElementById('status');
 var stateDiv = document.getElementById('state');
@@ -49,7 +59,7 @@ for (var i = 0; i < 31; i++) {
 }
 
 var textContentProp = ('textContent' in document.body ? 'textContent' : 'innerText');
-var setTextContent = function(div, text){
+var setTextContent = function (div, text) {
 	if (div) {
 		div[textContentProp] = text;
 	}
@@ -61,23 +71,23 @@ loadBtn.value = currlang.LOAD_BUTTON;
 saveBtn.value = currlang.SAVE_BUTTON;
 setTextContent(speedLabel, currlang.SPEED_LABEL);
 
-var setstatus = function(text, dontcancel){
+var setstatus = function (text, dontcancel) {
 	clearTimeout(statusTimeout);
 	setTextContent(statusDiv, text || '');
 	if (!dontcancel && text !== '') {
-		statusTimeout = setTimeout(function(){
+		statusTimeout = setTimeout(function () {
 			setTextContent(statusDiv, '');
 		}, 5000);
 	}
 };
-var addEvent = function(elm, evt, func){
+var addEvent = function (elm, evt, func) {
 	if (elm.addEventListener) {
 		elm.addEventListener(evt, func, false);
 	} else if (elm.attachEvent) {
 		elm.attachEvent('on' + (evt === 'change' ? 'propertychange' : evt), func);
 	}
 };
-var textareaSelectLine = function(currtextarea, linenumber){
+var textareaSelectLine = function (currtextarea, linenumber) {
 	try {
 		if (document.activeElement === speedSelect) {
 			return;
@@ -126,12 +136,12 @@ var textareaSelectLine = function(currtextarea, linenumber){
 			range.select();
 			range = null;
 		}
-		window.setTimeout(function(){
+		window.setTimeout(function () {
 			currtextarea.scrollLeft = 0;
 		}, 0);
-	} catch (e) {}
+	} catch (e) { }
 };
-var drawtape = function(){
+var drawtape = function () {
 	var redraw = false;
 	if (currclass === 0) {
 		currclass = (turingMachineInstance.lastmove === '-' ? 3 : 1);
@@ -181,44 +191,55 @@ var drawtape = function(){
 		codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = false;
 		return;
 	}
-	drawTimeout = setTimeout(drawtape, drawSpeed);
+
+	if (tickSpeed != -2)
+		drawTimeout = setTimeout(drawtape, drawSpeed);
 };
-var setspeed = function(){
+
+/**
+ * Called whenever speed is changed
+ */
+function setSpeed() {
 	tickSpeed = speedToTimeoutMapping[speedSelect.selectedIndex];
-	if (tickSpeed === -1) {
+
+	if (tickSpeed == -1) {
 		tickSpeed = 0;
 		drawSpeed = 130;
-	} else {
+	} else if (tickSpeed != -2) {
 		drawSpeed = tickSpeed / 3;
 	}
-};
-var start = function(){
+}
+
+var start = function () {
 	turingMachineInstance = new TuringMachine({
 		code: codeTextarea.value,
 		tapetext: inputBox.value,
-		onaftertick: function(){
-			tickTimeout = setTimeout(turingMachineInstance.tick, tickSpeed);
+		onaftertick: function () {
+			if (tickSpeed != -2)
+				tickTimeout = setTimeout(turingMachineInstance.tick, tickSpeed);
+			else
+				turingMachineInstance.tick();
 		},
-		onprestart: function(){
+		onprestart: function () {
 			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = progsSelect.disabled = loadBtn.disabled = saveBtn.disabled = true;
 			beforeUnloadWarningEnabled = true;
 			currclass = null;
 			clearTimeout(drawTimeout);
 			clearTimeout(tickTimeout);
 		},
-		onstart: function(){
+		onstart: function () {
 			setstatus('');
 			stopBtn.disabled = false;
-			setspeed();
+			setSpeed();
 			codeTextarea.focus();
 			drawtape();
 		},
-		onstop: function(){
+		onstop: function () {
 			stopBtn.disabled = true;
 			currclass = null;
 			drawtape();
 		},
-		onerror: function(obj){
+		onerror: function (obj) {
 			stopBtn.disabled = true;
 			clearTimeout(drawTimeout);
 			clearTimeout(tickTimeout);
@@ -228,7 +249,7 @@ var start = function(){
 			codeTextarea.focus();
 			textareaSelectLine(codeTextarea, obj.errorLine);
 		},
-		onwarning: function(warning){
+		onwarning: function (warning) {
 			if (warning === 'WARNING_ASCENDING_CHARACTER_CLASS') {
 				if (!ascending_character_class_warning) {
 					ascending_character_class_warning = true;
@@ -241,9 +262,10 @@ var start = function(){
 	});
 	turingMachineInstance.start();
 };
+
 var preventSelectTo = [stateDiv, usernameDiv, speedLabel, statusDiv, tapeDiv, moveLeftBtn, moveRightBtn];
 var selectPreventerEvent = ('onselectstart' in document.body ? 'selectstart' : 'mousedown');
-var selectPreventerFunc = function(e){
+var selectPreventerFunc = function (e) {
 	if (!e) {
 		e = window.event;
 	}
@@ -257,31 +279,31 @@ for (var j = 0; j < preventSelectTo.length; j++) {
 }
 preventSelectTo = selectPreventerEvent = selectPreventerFunc = null;
 addEvent(startBtn, 'click', start);
-addEvent(stopBtn, 'click', function(){
+addEvent(stopBtn, 'click', function () {
 	stopBtn.disabled = true;
 	if (turingMachineInstance) {
 		turingMachineInstance.stop();
 	}
 });
-addEvent(moveLeftBtn, 'click', function(){
+addEvent(moveLeftBtn, 'click', function () {
 	if (turingMachineInstance && turingMachineInstance.stopped && !startBtn.disabled) {
 		turingMachineInstance.tapepos++;
 		currclass = null;
 		drawtape();
 	}
 });
-addEvent(moveRightBtn, 'click', function(){
+addEvent(moveRightBtn, 'click', function () {
 	if (turingMachineInstance && turingMachineInstance.stopped && !startBtn.disabled) {
 		turingMachineInstance.tapepos--;
 		currclass = null;
 		drawtape();
 	}
 });
-addEvent(speedSelect, 'change', function(e, v){
-	setspeed();
+addEvent(speedSelect, 'change', function (e, v) {
+	setSpeed();
 	this.blur();
 });
-window.onbeforeunload = function(){
+window.onbeforeunload = function () {
 	if (beforeUnloadWarningEnabled || codeTextarea.value !== '') {
 		return currlang.EXIT_CONFIRMATION;
 	}
