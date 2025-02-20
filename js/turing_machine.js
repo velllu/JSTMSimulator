@@ -70,11 +70,14 @@ var TuringMachine = function (obj) {
 			that.tapetext = that.tapetext + ' ';
 		}
 		var currchar = that.tapetext.charAt(that.tapepos);
+
+		// If current state does not exist
 		if (!(rules[that.currstate] && rules[that.currstate][currchar])) {
 			that.stopped = true;
 			callback('onstop');
 			return false;
 		}
+
 		that.tapetext = that.tapetext.substring(0, that.tapepos) + rules[that.currstate][currchar][1] + that.tapetext.substring(that.tapepos + 1);
 		if (rules[that.currstate][currchar][2] === '<') {
 			that.lastmove = '<';
@@ -87,7 +90,16 @@ var TuringMachine = function (obj) {
 		}
 		that.stepcount++;
 		that.currtickline = rules[that.currstate][currchar][3];
+		var oldstate = that.currstate;
 		that.currstate = rules[that.currstate][currchar][0];
+
+		// If breakpoint met
+		if (rules[oldstate][currchar][4]) {
+			that.stopped = true;
+			callback('onstop');
+			return false;
+		}
+
 		callback("onaftertick");
 		return true;
 	};
@@ -209,7 +221,7 @@ var TuringMachine = function (obj) {
 		}
 		return outx;
 	};
-	var addrule = function (currline, readstate, readtape, writestate, writetape, movement) {
+	var addrule = function (currline, readstate, readtape, writestate, writetape, movement, isBreakpoint) {
 		var checkme = null;
 		if (readstate instanceof Array) {
 			checkme = readstate;
@@ -229,7 +241,7 @@ var TuringMachine = function (obj) {
 			var currwritetape = (writetape instanceof Array && writetape[0] === checkme[0]);
 			var currmovement = (movement instanceof Array && movement[0] === checkme[0]);
 			for (var i = 1; i < checkme.length; i++) {
-				addrule(currline, (currreadstate ? readstate[i] : readstate), (currreadtape ? readtape[i] : readtape), (currwritestate ? writestate[i] : writestate), (currwritetape ? writetape[i] : writetape), (currmovement ? movement[i] : movement));
+				addrule(currline, (currreadstate ? readstate[i] : readstate), (currreadtape ? readtape[i] : readtape), (currwritestate ? writestate[i] : writestate), (currwritetape ? writetape[i] : writetape), (currmovement ? movement[i] : movement), isBreakpoint);
 			}
 			return;
 		}
@@ -239,7 +251,7 @@ var TuringMachine = function (obj) {
 		if (!rules[readstate]) {
 			rules[readstate] = {};
 		}
-		rules[readstate][readtape] = [writestate, writetape, movement, currline];
+		rules[readstate][readtape] = [writestate, writetape, movement, currline, isBreakpoint];
 	};
 	var parsegroup = function (grpid, grplength, group, prefix, suffix) {
 		var outarray = [];
@@ -333,12 +345,12 @@ var TuringMachine = function (obj) {
 			that.currtickline = 0;
 			that.stopped = false;
 			var currline = 0;
-			var exitloop = false;
-			while (!exitloop) {
+			var is_breakpoint = false;
+			loop: while (true) {
 				switch (input.substr(0, 1)) {
-					case '':
-						exitloop = true;
-						break;
+					case '': // End of file
+						break loop;
+
 					case '#':
 						currline++;
 						if (input.indexOf('\n') === -1) {
@@ -348,13 +360,22 @@ var TuringMachine = function (obj) {
 							input = input.substring(input.indexOf('\n') + 1);
 						}
 						break;
+
+					case '!':
+						if (is_breakpoint) throw new TMError("DOUBLE_BREAKPOINT_MET");
+						is_breakpoint = true;
+						input = input.substring(1);
+						break;
+
 					case '\n':
 						currline++;
 						input = input.substring(1);
 						break;
+
 					case ' ':
 						input = input.substring(1);
 						break;
+
 					case '(':
 						input = input.substring(1);
 						var grplength = {};
@@ -363,7 +384,8 @@ var TuringMachine = function (obj) {
 						var writestate = getpart(grplength, 2);
 						var writetape = getpart(grplength, 3);
 						var movement = getpart(grplength, 4);
-						addrule(currline, readstate, readtape, writestate, writetape, movement);
+						addrule(currline, readstate, readtape, writestate, writetape, movement, is_breakpoint);
+						is_breakpoint = false;
 						break;
 					default:
 						throw new TMError('READ_ERROR_UNEXPECTED_END_OF_RULE');
