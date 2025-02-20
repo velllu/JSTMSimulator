@@ -88,6 +88,7 @@ var TuringMachine = function (obj) {
 		that.stepcount++;
 		that.currtickline = rules[that.currstate][currchar][3];
 		that.currstate = rules[that.currstate][currchar][0];
+		callback("onaftertick");
 		return true;
 	};
 	var unescapedIndexOf = function (input, srch, startidx) {
@@ -368,9 +369,7 @@ var TuringMachine = function (obj) {
 						throw new TMError('READ_ERROR_UNEXPECTED_END_OF_RULE');
 				}
 			}
-			//console.log(rules);
 			callback('onstart');
-			tick();
 		} catch (e) {
 			that.stopped = true;
 			callback('onerror', { errorMessage: (e instanceof TMError ? e.type : (e.message || e)), errorType: (e instanceof TMError ? 'syntax' : 'unknown'), errorLine: currline });

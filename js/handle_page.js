@@ -208,6 +208,9 @@ var start = function () {
 	turingMachineInstance = new TuringMachine({
 		code: codeTextarea.value,
 		tapetext: inputBox.value,
+		onaftertick: function () {
+			tickTimeout = setTimeout(turingMachineInstance.tick, tickSpeed);
+		},
 		onprestart: function () {
 			codeTextarea.readOnly = inputBox.disabled = startBtn.disabled = true;
 			beforeUnloadWarningEnabled = true;
@@ -250,15 +253,11 @@ var start = function () {
 	});
 
 	turingMachineInstance.start();
+	turingMachineInstance.tick();
 
-	// There used to be a `onaftertick` method that was called when a tick was finished
-	// that started a new tick, but that causes heavy recursion and it makes the simulator
-	// crash with big projects so I made it into a normal loop
-	while (turingMachineInstance.tick()) {
-		if (tickSpeed != -2)
-			tickTimeout = setTimeout(turingMachineInstance.tick, tickSpeed);
-		else
-			turingMachineInstance.tick();
+	// If we choose the no draw option we just loop without iteration
+	if (tickSpeed == -2) {
+		while (turingMachineInstance.tick()) { }
 	}
 };
 
@@ -302,9 +301,5 @@ addEvent(speedSelect, 'change', function (e, v) {
 	setSpeed();
 	this.blur();
 });
-window.onbeforeunload = function () {
-	if (beforeUnloadWarningEnabled || codeTextarea.value !== '') {
-		return currlang.EXIT_CONFIRMATION;
-	}
-};
+
 codeTextarea.disabled = codeTextarea.readOnly = inputBox.disabled = speedSelect.disabled = startBtn.disabled = false;
