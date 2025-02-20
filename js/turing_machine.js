@@ -8,16 +8,14 @@
  * Please see the attached LICENSE file for licensing information.
  */
 
-var TuringMachine = function(obj){
+var TuringMachine = function (obj) {
 	if (!obj) {
 		return null;
 	}
 
-	var callback = function(name, arg){
+	var callback = function (name, arg) {
 		if (obj[name]) {
-			try {
-				obj[name](arg);
-			} catch (e) {}
+			obj[name](arg);
 		}
 	};
 
@@ -35,7 +33,7 @@ var TuringMachine = function(obj){
 	that.currtickline = 0;
 	that.stopped = true;
 
-	var TMError = function(type){
+	var TMError = function (type) {
 		if (!(this instanceof TMError)) {
 			return new TMError(type);
 		}
@@ -45,12 +43,12 @@ var TuringMachine = function(obj){
 	};
 	TMError.prototype = new Error();
 	TMError.prototype.name = 'TMError';
-	TMError.toString = function(){
+	TMError.toString = function () {
 		return 'function TMError() { [native code] }';
 	};
 	TMError.toString.toString = TMError.toString;
 
-	var inArray = function(currarray, elm){
+	var inArray = function (currarray, elm) {
 		if (currarray) {
 			for (var i = 0; i < currarray.length; i++) {
 				if (i in currarray && currarray[i] === elm) {
@@ -60,7 +58,7 @@ var TuringMachine = function(obj){
 		}
 		return -1;
 	};
-	var tick = function(){
+	var tick = function () {
 		if (that.stopped) {
 			return false;
 		}
@@ -90,17 +88,16 @@ var TuringMachine = function(obj){
 		that.stepcount++;
 		that.currtickline = rules[that.currstate][currchar][3];
 		that.currstate = rules[that.currstate][currchar][0];
-		callback('onaftertick');
 		return true;
 	};
-	var unescapedIndexOf = function(input, srch, startidx){
+	var unescapedIndexOf = function (input, srch, startidx) {
 		var output = (typeof startidx == 'undefined' ? 0 : startidx) - 1;
 		do {
 			output = input.indexOf(srch, output + 1);
 		} while (input.charAt(output - 1) === '\\' && ((input.charAt(output - 2) !== '\\') || (input.charAt(output - 3) === '\\')));
 		return output;
 	};
-	var getpart = function(grplength, currtype){
+	var getpart = function (grplength, currtype) {
 		var openpIdx = unescapedIndexOf(input, '(');
 		var commaIdx;
 		var closeIdx;
@@ -192,7 +189,7 @@ var TuringMachine = function(obj){
 		}
 		return normalizestate(part);
 	};
-	var normalizestate = function(part){
+	var normalizestate = function (part) {
 		var outx = '';
 		while (part.length) {
 			if (part.charAt(0) === '\\') {
@@ -211,7 +208,7 @@ var TuringMachine = function(obj){
 		}
 		return outx;
 	};
-	var addrule = function(currline, readstate, readtape, writestate, writetape, movement){
+	var addrule = function (currline, readstate, readtape, writestate, writetape, movement) {
 		var checkme = null;
 		if (readstate instanceof Array) {
 			checkme = readstate;
@@ -243,7 +240,7 @@ var TuringMachine = function(obj){
 		}
 		rules[readstate][readtape] = [writestate, writetape, movement, currline];
 	};
-	var parsegroup = function(grpid, grplength, group, prefix, suffix){
+	var parsegroup = function (grpid, grplength, group, prefix, suffix) {
 		var outarray = [];
 		var reversematch = false;
 		prefix = normalizestate(prefix);
@@ -319,7 +316,7 @@ var TuringMachine = function(obj){
 		outarray.unshift(grpid);
 		return outarray;
 	};
-	var start = function(){
+	var start = function () {
 		if (!that.stopped) {
 			return;
 		}
@@ -376,13 +373,13 @@ var TuringMachine = function(obj){
 			tick();
 		} catch (e) {
 			that.stopped = true;
-			callback('onerror', {errorMessage: (e instanceof TMError ? e.type : (e.message || e)), errorType: (e instanceof TMError ? 'syntax' : 'unknown'), errorLine: currline});
+			callback('onerror', { errorMessage: (e instanceof TMError ? e.type : (e.message || e)), errorType: (e instanceof TMError ? 'syntax' : 'unknown'), errorLine: currline });
 		}
 	};
 
 	that.tick = tick;
 	that.start = start;
-	that.stop = function(){
+	that.stop = function () {
 		that.stopped = true;
 	};
 };
