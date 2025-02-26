@@ -46,9 +46,10 @@ var tapeDiv = document.getElementById('tape');
 var speedLabel = document.getElementById('speedlbl');
 var speedSelect = document.getElementById('speed');
 var startBtn = document.getElementById('startbtn');
+var tickBtn = document.getElementById('tickbtn');
 var stopBtn = document.getElementById('stopbtn');
-var moveLeftBtn = document.getElementById('moveleft');
-var moveRightBtn = document.getElementById('moveright');
+var moveLeftBtn = document.getElementById('left-scroll');
+var moveRightBtn = document.getElementById('right-scroll');
 var cells = [];
 for (var i = 0; i < 31; i++) {
 	cells[i] = document.getElementById('cell' + i);
@@ -62,6 +63,7 @@ var setTextContent = function (div, text) {
 };
 
 startBtn.value = currlang.START_BUTTON;
+tickBtn.value = currlang.TICK_BUTTON;
 stopBtn.value = currlang.STOP_BUTTON;
 setTextContent(speedLabel, currlang.SPEED_LABEL);
 
@@ -227,6 +229,7 @@ var start = function () {
 		},
 		onstop: function () {
 			stopBtn.disabled = true;
+			tickBtn.disabled = false;
 			currclass = null;
 			drawtape();
 		},
@@ -277,29 +280,42 @@ for (var j = 0; j < preventSelectTo.length; j++) {
 }
 preventSelectTo = selectPreventerEvent = selectPreventerFunc = null;
 addEvent(startBtn, 'click', start);
+
 addEvent(stopBtn, 'click', function () {
 	stopBtn.disabled = true;
 	if (turingMachineInstance) {
 		turingMachineInstance.stop();
+		tickBtn.disabled = false;
 	}
 });
-addEvent(moveLeftBtn, 'click', function () {
+
+addEvent(moveRightBtn, 'click', function () {
 	if (turingMachineInstance && turingMachineInstance.stopped && !startBtn.disabled) {
 		turingMachineInstance.tapepos++;
 		currclass = null;
 		drawtape();
 	}
 });
-addEvent(moveRightBtn, 'click', function () {
+
+addEvent(moveLeftBtn, 'click', function () {
 	if (turingMachineInstance && turingMachineInstance.stopped && !startBtn.disabled) {
 		turingMachineInstance.tapepos--;
 		currclass = null;
 		drawtape();
 	}
 });
+
 addEvent(speedSelect, 'change', function (e, v) {
 	setSpeed();
 	this.blur();
 });
 
+addEvent(tickBtn, 'click', function () {
+	turingMachineInstance.stopped = false;
+	turingMachineInstance.tick();
+	turingMachineInstance.stopped = true;
+	drawtape();
+});
+
 codeTextarea.disabled = codeTextarea.readOnly = inputBox.disabled = speedSelect.disabled = startBtn.disabled = false;
+tickBtn.disabled = true;

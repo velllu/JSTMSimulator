@@ -4,17 +4,26 @@
 }
 
 #cells {
-    overflow-x: auto;
+    display: flex;
+    align-items: center;
 }
 
-#cells p {
+#cells p,
+#cells button,
+#cells span {
     padding: 0;
     margin: 0;
 }
 
+#cells button {
+    width: 20px;
+    height: 40px;
+}
+
 #cells span {
-    display: table-cell;
-    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     text-align: center;
     width: 20px;

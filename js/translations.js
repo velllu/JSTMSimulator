@@ -11,6 +11,7 @@
 var lang = {};
 lang.en = {
 	START_BUTTON: 'Start',
+	TICK_BUTTON: 'Tick',
 	STOP_BUTTON: 'Stop',
 	SPEED_LABEL: 'Speed:',
 	STEPS_LABEL: 'Steps:',
@@ -45,6 +46,7 @@ lang.en = {
 };
 lang.it = {
 	START_BUTTON: 'Esegui',
+	TICK_BUTTON: 'Avanti',
 	STOP_BUTTON: 'Stop',
 	SPEED_LABEL: 'Velocità:',
 	STEPS_LABEL: 'Passi:',
