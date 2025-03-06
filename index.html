@@ -12,6 +12,7 @@
         <meta name="keywords" content="jstmsimulator, tmsimulator, tmsimulatore, turing machine simulator, turing machine, tm simulator, turing simulator, simulatore macchina di turing, macchina di turing, simulatore turing" />
         <meta name="google" content="notranslate" />
         <meta name="format-detection" content="telephone=no" />
+        <link rel="stylesheet" type="text/css" href="css/editor.css" />
         <link rel="stylesheet" type="text/css" href="css/base.css" />
         <link rel="stylesheet" type="text/css" href="css/inputs.css" />
         <link rel="stylesheet" type="text/css" href="css/tape.css" />
@@ -19,7 +20,10 @@
     <body>
         <div id="main">
             <div id="text">
-                <textarea id="code" wrap="off" autocomplete="off" spellcheck="false" disabled></textarea>
+                <div id="code-editor">
+                    <textarea id="code" wrap="off" autocomplete="off" spellcheck="false" disabled></textarea>
+                    <p id="code-text"></p>
+                </div>
             </div>
 
             <div id="inputs">
@@ -106,6 +110,7 @@
         </div>
 
         <script src="js/saving.js"></script>
+        <script src="js/editor.js"></script>
         <script src="js/turing_machine.js"></script>
         <script src="js/translations.js"></script>
         <script src="js/handle_page.js"></script>
