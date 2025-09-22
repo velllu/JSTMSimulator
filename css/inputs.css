@@ -7,6 +7,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 4px;
 }
 
 #buttons {
@@ -16,8 +17,47 @@
 }
 
 #buttons select,
-#buttons input {
-    width: 33%;
+#buttons button {
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#buttons select {
+    width: 60%;
+}
+
+#buttons button {
+    padding: 1em;
+    width: 13.3%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#startbtn {
+    background-color: #84e614;
+}
+
+#tickbtn {
+    background-color: #e9bc26;
+}
+
+#stopbtn {
+    background-color: #e92626;
+}
+
+#startbtn:disabled,
+#stopbtn:disabled,
+#tickbtn:disabled {
+    background-color: #5a5555;
+    color: #acacac;
+}
+
+@media only screen and (max-width: 630px) {
+    #authorrow {
+        font-size: .8em;
+    }
 }
 
 /* Inputs second row */
@@ -27,12 +67,14 @@
 
 #secondrow input {
     width: 100%;
+    font-size: 1.3em;
 }
 
 /* Author row */
 #authorrow {
     display: flex;
     justify-content: right;
+    margin-bottom: -1em;
 }
 
 #authorrow,

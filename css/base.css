@@ -4,9 +4,16 @@ body {
     padding: 0;
 }
 
+p,
+textarea,
+button,
+input {
+    font-family: "Iosevka Web";
+}
+
 body {
     font: 15px arial, sans-serif;
-    background: #8ec07c;
+    background: #008b54;
 
     display: flex;
     justify-content: center;

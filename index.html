@@ -13,6 +13,7 @@
         <meta name="keywords" content="jstmsimulator, tmsimulator, tmsimulatore, turing machine simulator, turing machine, tm simulator, turing simulator, simulatore macchina di turing, macchina di turing, simulatore turing" />
         <meta name="google" content="notranslate" />
         <meta name="format-detection" content="telephone=no" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Iosevka/6.0.0/iosevka/iosevka.min.css">
         <link rel="stylesheet" type="text/css" href="css/editor.css" />
         <link rel="stylesheet" type="text/css" href="css/base.css" />
         <link rel="stylesheet" type="text/css" href="css/inputs.css" />
@@ -29,11 +30,11 @@
 
             <div id="inputs">
                 <div id="authorrow">
-                    <div id="status"><a href="https://www.turingsimulator.net/">Turing Machine Simulator</a> by <a href="https://www.vittgam.net/">VittGam</a></div>
+                    <p id="status">Turing Machine Simulator, originally by <a href="https://www.vittgam.net/">VittGam</a>, and forked by <a href="https://www.github.com/velllu">velllu</a></p>
                 </div>
 
                 <div id="firstrow">
-                    <span id="speedlbl"></span>
+                    <p id="speedlbl"></p>
                     <div id="buttons">
                         <select id="speed" autocomplete="off" disabled>
                             <option>0</option>
@@ -51,9 +52,9 @@
                             <option>Max, No Draw (fast, but only usable for ending programs)</option>
                         </select>
 
-                        <input type="button" id="startbtn" value="" disabled />
-                        <input type="button" id="tickbtn" value="" disabled />
-                        <input type="button" id="stopbtn" value="" disabled />
+                        <button id="startbtn">▶</button>
+                        <button id="tickbtn">⏭</button>
+                        <button id="stopbtn">⏹</button>
                     </div>
                 </div>
 

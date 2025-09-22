@@ -2,12 +2,15 @@
     width: 100%;
     margin: 0;
     padding: 0;
-}
 
-#code-editor {
     position: relative;
     display: inline-block;
     height: 100%;
+}
+
+textarea:focus {
+    outline: none;
+    outline-width: 0;
 }
 
 #code {
@@ -48,8 +51,7 @@
 
 #code,
 #code-text {
-    font-family: monospace;
-    font-size: 1.1em;
+    font-size: 1.3em;
 }
 
 #code-text {
@@ -62,7 +64,9 @@
 }
 
 .editor-breakpoint {
-    color: #cc241d;
+    color: #fe8019;
+    font-weight: bold;
+    font-family: "Iosevka Web Oblique";
 }
 
 .editor-comment {
@@ -79,6 +83,7 @@
 
 .editor-state {
     color: #d3869b;
+    font-weight: bold;
 }
 
 .editor-separator {
