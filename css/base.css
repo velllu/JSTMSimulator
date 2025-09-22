@@ -6,7 +6,7 @@ body {
 
 body {
     font: 15px arial, sans-serif;
-    background: #008b54;
+    background: #8ec07c;
 
     display: flex;
     justify-content: center;
@@ -41,7 +41,7 @@ body {
     align-items: center;
 }
 
-@media only screen and (max-width: 1100px) {
+@media only screen and (max-width: 1400px) {
     #main {
         grid-template-areas:
             "tape"
@@ -51,5 +51,21 @@ body {
 
     #text {
         height: 45vh;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #main {
+        width: 95%;
+    }
+
+    .hide {
+        display: none !important;
+    }
+}
+
+@media only screen and (max-width: 630px) {
+    .hide-shorter {
+        display: none !important;
     }
 }

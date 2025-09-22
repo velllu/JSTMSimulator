@@ -11,12 +11,16 @@
 }
 
 #code {
-    width: 100%;
+    width: calc(100% - .5em);
     height: 100%;
     font-size: 16px;
     margin: 0;
     padding: 0;
     caret-color: white;
+    scrollbar-width: 0;
+
+    padding-top: .5em;
+    padding-left: .5em;
 }
 
 #code-text {
@@ -30,6 +34,10 @@
     padding: 0;
     overflow: hidden;
     white-space: nowrap;
+    scrollbar-width: 0;
+
+    padding-top: .5em;
+    padding-left: .5em;
 }
 
 #code {
